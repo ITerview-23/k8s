@@ -1,0 +1,22 @@
+# values.yaml
+image:
+  repository: 431955170593.dkr.ecr.ap-northeast-2.amazonaws.com/iterview
+  tag: latest
+  pullPolicy: Always
+
+deployment:
+  name: prod-iterview-graphql-deployment
+  namespace: iterview-prod
+  replicas: 1
+
+service:
+  name: prod-iterview-graphql-service
+  namespace: iterview-prod
+  type: LoadBalancer
+  httpPort: 80
+  httpsPort: 443
+  targetPort: 80
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: https
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ap-northeast-2:431955170593:certificate/b7628e22-48be-44a1-b569-1f372041298b

@@ -1,23 +1,23 @@
+# templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: prod-iterview-graphql-service
-  namespace: iterview-prod
+  name: {{ .Values.service.name }}
+  namespace: {{ .Values.service.namespace }}
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: https
     service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ap-northeast-2:431955170593:certificate/b7628e22-48be-44a1-b569-1f372041298b
-
 spec:
-  type: LoadBalancer
+  type: {{ .Values.service.type }}
   ports:
     - name: http
-      port: 80
-      targetPort: 80
+      port: {{ .Values.service.httpPort }}
+      targetPort: {{ .Values.service.targetPort }}
       protocol: TCP
     - name: https
-      port: 443
-      targetPort: 80
+      port: {{ .Values.service.httpsPort }}
+      targetPort: {{ .Values.service.targetPort }}
       protocol: TCP
   selector:
-    server: prod-iterview-graphql
+    server: {{ .Values.deployment.name }}
