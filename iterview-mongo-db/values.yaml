@@ -4,5 +4,6 @@ image:
   pullPolicy: IfNotPresent
 
 service:
+  name: prod-mongodb-service
   type: ClusterIP
   port: 27017
