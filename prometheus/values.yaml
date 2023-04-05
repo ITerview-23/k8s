@@ -1,0 +1,46 @@
+kube-prometheus-stack:
+  prometheus:
+    additionalScrapeConfigs:
+      - job_name: 'kubernetes-apiservers'
+        kubernetes_sd_configs:
+          - api_server: null
+            role: endpoints
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+            separator: ;
+            regex: default;kubernetes;https
+            replacement: kubernetes-apiserver
+            target_label: job
+    persistentVolume:
+      size: 5Gi
+      storageClass: standard
+      accessModes:
+        - ReadWriteOnce
+      mountPath: /prometheus
+    service:
+      type: NodePort
+      nodePort: 30000
+    configMaps:
+      prometheus-server-conf:
+        prometheus.yml: |
+          global:
+            scrape_interval: 15s
+          scrape_configs:
+            - job_name: 'kubernetes-apiservers'
+              kubernetes_sd_configs:
+                - api_server: null
+                  role: endpoints
+              scheme: https
+              tls_config:
+                ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+              relabel_configs:
+                - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+                  separator: ;
+                  regex: default;kubernetes;https
+                  replacement: kubernetes-apiserver
+                  target_label: job

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-server-conf
+data:
+  prometheus.yml: |
+    {{ .Values.kube-prometheus-stack.prometheus.configMaps.prometheus-server-conf.prometheus.yml }}
