@@ -10,7 +10,3 @@ spec:
       port: 9090
       targetPort: web
       protocol: TCP
-  type: {{ .Values.kube-prometheus-stack.prometheus.service.type | quote }}
-  {{- if eq .Values.kube-prometheus-stack.prometheus.service.type "NodePort" }}
-  nodePort: {{ .Values.kube-prometheus-stack.prometheus.service.nodePort }}
-  {{- end }}
