@@ -6,12 +6,12 @@ image:
 
 deployment:
   name: prod-iterview-graphql-deployment
-  namespace: iterview-prod
+  namespace: iterview
   replicas: 1
 
 service:
   name: prod-iterview-graphql-service
-  namespace: iterview-prod
+  namespace: iterview
   type: LoadBalancer
   httpPort: 80
   httpsPort: 443
