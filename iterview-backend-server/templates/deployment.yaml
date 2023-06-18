@@ -28,3 +28,13 @@ spec:
                 secretKeyRef:
                   name: iterview-secret
                   key: mongoDB-URI
+            - name: Slack_Bot_Token
+              valueFrom:
+                secretKeyRef:
+                  name: iterview-secret
+                  key: slack-bot-token
+            - name: OpenAI_API_Key
+              valueFrom:
+                secretKeyRef:
+                  name: iterview-secret
+                  key: openai-api-key
