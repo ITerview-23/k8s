@@ -17,14 +17,8 @@ spec:
         server: {{ .Values.deployment.name }}
     spec:
       containers:
-        - name: graphql-iterview-container
+        - name: iterview-container
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.service.targetPort }}
-          env:
-            - name: MONGODB_URI
-              valueFrom:
-                secretKeyRef:
-                  name: iterview-secret
-                  key: mongoDB-URI
+            - containerPort: 80
