@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server-output
+  namespace: argocd
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: https
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ap-northeast-2:431955170593:certificate/b7628e22-48be-44a1-b569-1f372041298b
+spec:
+  selector:
+    app.kubernetes.io/name: argocd-server
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+    - name: https
+      port: 443
+      targetPort: 8080
+      protocol: TCP

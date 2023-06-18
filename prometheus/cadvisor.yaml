@@ -1,0 +1,67 @@
+# cadvisor-exporter-deployment.yaml
+# cadvisor-daemonset.yaml
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cadvisor
+  namespace: prometheus
+  labels:
+    k8s-app: cadvisor
+spec:
+  selector:
+    matchLabels:
+      k8s-app: cadvisor
+  template:
+    metadata:
+      labels:
+        k8s-app: cadvisor
+    spec:
+      containers:
+        - name: cadvisor
+          image: google/cadvisor
+          ports:
+            - containerPort: 8080
+              name: metrics
+          volumeMounts:
+            - name: rootfs
+              mountPath: /rootfs
+              readOnly: true
+            - name: var-run
+              mountPath: /var/run
+            - name: sys
+              mountPath: /sys
+              readOnly: true
+            - name: docker
+              mountPath: /var/lib/docker
+              readOnly: true
+      volumes:
+        - name: rootfs
+          hostPath:
+            path: /
+        - name: var-run
+          hostPath:
+            path: /var/run
+        - name: sys
+          hostPath:
+            path: /sys
+        - name: docker
+          hostPath:
+            path: /var/lib/docker
+
+
+---
+# cadvisor-exporter-service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cadvisor-exporter
+  namespace: prometheus
+spec:
+  selector:
+    k8s-app: cadvisor
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

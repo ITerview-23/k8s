@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: prometheus
+data:
+  prometheus.yaml: |-
+    global:
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      evaluation_interval: 1m
+    scrape_configs:
+      - job_name: 'mongodb-exporter'
+        scrape_interval: 10s
+        metrics_path: /metrics
+        scheme: https
+        basic_auth:
+          username: iterview
+          password: xrhp1xhV3X8omW4K
+        http_sd_configs:
+          - url: https://cloud.mongodb.com/prometheus/v1.0/groups/6394ccfad24d3634ad095098/discovery
+            refresh_interval: 60s
+            basic_auth:
+              username: iterview
+              password: xrhp1xhV3X8omW4K  
+      - job_name: 'kube-state-metrics'
+        static_configs:
+          - targets: ['kube-state-metrics:8080']
+      - job_name: 'cadvisor'
+        static_configs:
+          - targets: ['cadvisor-exporter:8080']
+      - job_name: 'node-exporter'
+        static_configs:
+          - targets: ['node-exporter:9100']
+  

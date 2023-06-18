@@ -1,0 +1,16 @@
+# values.yaml
+image:
+  repository: 431955170593.dkr.ecr.ap-northeast-2.amazonaws.com/iterview
+  tag: latest-java
+  pullPolicy: Always
+
+deployment:
+  name: prod-iterview-spring-boot-deployment
+  namespace: iterview
+  replicas: 1
+
+service:
+  name: prod-iterview-spring-boot-service
+  namespace: iterview
+  type: ClusterIP
+  port: 80
